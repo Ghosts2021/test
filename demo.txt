@@ -191,3 +191,36 @@ DSLAM --> BAS --> 隧道专用路由器 --> 互联网
 电信号 1 表示高电压，0 表示低电压，将这样的电信号输入 LED、 激光二极管等光源后，这些光源就会根据信号电压的变化发光，高电压发光亮，低电压发光暗。
 光信号在光纤中传导之后到达接收端，接收端有可以感应光线的光敏元件，光敏元件可以根据光的亮度产生不同的电压。当光信号照射到上面时，光亮的时候就产生高电压，光暗的时候就产生低电压，这样就将光信号转换成了电信号。
 最后再将电信号转换成数字信息，我们就接收到数据了。
+
+https://www.cnblogs.com/crazymakercircle/p/18128466#autoid-h2-6-0-0
+https://www.cnblogs.com/jyroy/p/11365935.html
+https://www.cnblogs.com/zhengbin/p/5653051.html
+
+SpringBoot 自动装配使得开发人员可以轻松地搭建、配置和运行应用程序，而无需手动管理大部分的 bean 和配置。
+自动装配机制与模块化和复用化密切相关，它们之间存在着相互促进和互补的关系。
+
+@SpringBootApplication
+    @SpringBootConfiguration
+        @Configuration 声明为配置类，底层也是通过 @Component
+    @EnableAutoConfiguration
+        @AutoConfigurationPackage
+            @Import({AutoConfigurationPackages.Registrar.class})
+            扫描当前应用程序的主类所在的包及其子包
+            1、将扫描到的组件注册为bean（这个功能跟@ComponentScan是一样的）
+            2、将包路径注册为 BeanDefinition（多模块之间路径扫描，以实现自动装配，这里不够详细）
+                例如SpringBoot接入JPA，JPA会去容器中找到注册的BeanDefinition，这里是怎么实现接入的
+        @Import({AutoConfigurationImportSelector.class})
+        读取所有 starter 下的spring.factories（2.7后有新的文件AutoConfiguration.imports），找到所有自动配置类，
+        过滤@EnableAutoConfiguration 注解的 exclude 和 excludeName，过滤@Conditional（@ConditionalOnClass...）条件注解，
+        注册到Spring 容器中。
+
+        spring.factories文件通常用于第三方库或模块中，用于向Spring Boot注册自己的自动配置类。这样，当用户引入这些库时，Spring Boot能够自动识别并加载这些配置类，而不需要用户手动配置
+    @ComponentScan
+    扫描、注册bean
+
+自定义 SpringBoot starter
+1、定义 Starter 模块：创建一个 Maven 或 Gradle 项目，作为 Starter 模块。该模块应该包含要提供的功能、配置和依赖项。
+2、创建自动配置类：编写一个自动配置类，该类负责配置和初始化 Starter 提供的功能。这个类通常需要用 @Configuration 和其他条件注解（如 @ConditionalOnClass、@ConditionalOnBean 等）标记。
+3、提供默认配置：通过 META-INF/spring.factories 文件中提供默认的配置类。
+4、创建 Starter 类：创建一个类作为 Starter 的入口点。
+5、发布到 Maven 仓库：将 Starter 打包，并发布到 Maven 中央仓库或其他公共或私有的 Maven 仓库中，
