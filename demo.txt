@@ -224,3 +224,5 @@ SpringBoot 自动装配使得开发人员可以轻松地搭建、配置和运行
 3、提供默认配置：通过 META-INF/spring.factories 文件中提供默认的配置类。
 4、创建 Starter 类：创建一个类作为 Starter 的入口点。
 5、发布到 Maven 仓库：将 Starter 打包，并发布到 Maven 中央仓库或其他公共或私有的 Maven 仓库中，
+
+https://www.cnblogs.com/myseries/p/12050083.html
